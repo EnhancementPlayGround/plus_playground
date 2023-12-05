@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  server:
+    image: prod:latest
+    restart: always
+
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    ports:
+      - '80:3010'
+
+    environment:
+      - PORT=${PORT}
