@@ -28,11 +28,11 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
+      - name: package install
+        run: npm ci
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: package install
-        run: npm ci
       - name: build
         run: npm run build
   test:
