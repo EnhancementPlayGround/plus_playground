@@ -1,19 +1,17 @@
-name: NodeJS with Webpack
+name: CI/CD
 
 on:
   push:
-    branches: ["dev", "main"]
+    branches: ['dev', 'main']
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 jobs:
-  build:
+  checkout:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x]
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -21,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: 'npm'
       - name: Cache node modules
         uses: actions/cache@v2
         with:
@@ -30,10 +28,16 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-build-
             ${{ runner.OS }}-
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: package install
         run: npm ci
       - name: build
         run: npm run build
+  test:
+    runs-on: ubuntu-latest
+    steps:
       - name: lint & test
         run: |
           npm run lint
