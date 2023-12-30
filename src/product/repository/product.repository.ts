@@ -1,23 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Product } from '@prisma/client';
+import { Product } from '@prisma/client';
 import { PrismaService } from 'prisma/prisma.service';
-
-type Tx = Prisma.ProductDelegate<
-  Prisma.RejectOnNotFound | Prisma.RejectPerOperation
->;
 
 @Injectable()
 export class ProductRepository {
-  constructor(prisma: PrismaService) {
-    this.prisma = prisma.product;
-  }
+  constructor(private prisma: PrismaService) {}
 
-  private readonly prisma: Tx;
-
-  async getProduct(id: number, tx?: Tx): Promise<Product> {
-    const ctx = tx ?? this.prisma;
-
-    const product = await ctx.findUnique({
+  async getProduct(id: number): Promise<Product> {
+    const product = await this.prisma.product.findUnique({
       where: {
         id: id,
       },
@@ -30,10 +20,8 @@ export class ProductRepository {
     return product;
   }
 
-  async getProducts(tx?: Tx): Promise<Product[]> {
-    const ctx = tx ?? this.prisma;
-
-    const products = await ctx.findMany();
+  async getProducts(): Promise<Product[]> {
+    const products = await this.prisma.product.findMany();
 
     if (products === null) {
       throw new Error('The products does not exist.');
