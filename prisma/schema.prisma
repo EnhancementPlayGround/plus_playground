@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestgraphql {
+  provider               = "node node_modules/prisma-nestjs-graphql"
+  output                 = "../src/@generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id          Int        @id @default(autoincrement()) 
+  name        String
+  price       Int
+  count       Int 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  Order       Order[]
+}
+
+model User {
+  id          Int        @id @default(autoincrement())
+  name        String
+  balace      Int
+  Order       Order[]
+}
+
+model Order {
+  id          Int        @id @default(autoincrement()) 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userId      Int
+  User        User       @relation(fields: [userId], references: [id])
+  productId   Int        
+  Product     Product    @relation(fields: [productId], references: [id])
+  orderCount  Int
+}
