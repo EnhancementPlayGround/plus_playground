@@ -18,4 +18,5 @@ type ProductDto {
 
 type Query {
   product(productId: Int!): ProductDto!
+  products: [ProductDto!]!
 }
