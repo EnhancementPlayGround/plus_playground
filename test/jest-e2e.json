@@ -3,6 +3,11 @@
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
+  "moduleNameMapper": {
+    "^@prisma": "<rootDir>/prisma",
+    "^@logger": "<rootDir>/src/logger",
+    "^@middlewares": "<rootDir>/src/middlewares"
+  },
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   }
